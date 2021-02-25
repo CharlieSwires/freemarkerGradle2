@@ -1,0 +1,63 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+	<groupId>uk.co.scube</groupId>
+  <artifactId>freemarkerGradle</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+    <packaging>war</packaging>
+	<properties>
+		<java.version>1.8</java.version>
+		<log4j2.version>2.6.1</log4j2.version>
+		<spring.version>2.2.9.RELEASE</spring.version>
+	</properties>
+	<dependencies>
+	<dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-csv</artifactId>
+      <version>1.8</version>
+    </dependency>
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.20</version>
+    </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring.version}</version>
+
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<version>${spring.version}</version>
+
+			<scope>test</scope>
+		</dependency>
+    	<dependency>
+   			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<version>${spring.version}</version>
+
+   			<scope>provided</scope>
+		</dependency>
+   		<dependency>
+        	<groupId>junit</groupId>
+        	<artifactId>junit</artifactId>
+        	<version>4.13</version>
+        	<scope>test</scope>
+    	</dependency>
+ 		<dependency>
+    		<groupId>org.bouncycastle</groupId>
+    		<artifactId>bcprov-debug-jdk15on</artifactId>
+    		<version>1.65</version>
+		</dependency>
+   </dependencies>
+
+</project>
