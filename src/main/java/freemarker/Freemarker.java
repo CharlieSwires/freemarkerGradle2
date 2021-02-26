@@ -251,7 +251,7 @@ public class Freemarker {
         return publishPDF();
     }
 
-    public String convert2(Partha1InputBean[] input2) throws Exception {
+    public synchronized String convert2(Partha1InputBean[] input2) throws Exception {
         // 1. Configure FreeMarker
         //
         // You should do this ONLY ONCE, when your application starts,
@@ -278,7 +278,6 @@ public class Freemarker {
         Writer consoleWriter = new OutputStreamWriter(System.out);
 
         List<ColumnsPartha1InputBean> systems = new ArrayList<ColumnsPartha1InputBean>();
-        consoleWriter.write("=========================input2.length = "+input2.length);
         consoleWriter.write(Arrays.toString(input2));
         for(int i = 0; i < input2.length; i++) {
             systems.add(input2[i].convert());
@@ -309,7 +308,7 @@ public class Freemarker {
 
         return publishPDF();
     }
-    public String convert2(InputHTMLString input) throws Exception {
+    public synchronized String convert2(InputHTMLString input) throws Exception {
 
         FileWriter fw = new FileWriter(new File("/usr/local/tomcat/output.html"));
         fw.write(input.getInputHTML());
@@ -322,7 +321,7 @@ public class Freemarker {
     }
 
 
-    private String publishPDF() throws Exception {
+    private synchronized String publishPDF() throws Exception {
 
         boolean isWindows = System.getProperty("os.name")
                 .toLowerCase().startsWith("windows");
@@ -388,7 +387,11 @@ public class Freemarker {
         return result;    
     }
 
-    public String convert(InputBeanGeneral2 input) throws Exception {
+    public synchronized String convert(InputBeanGeneral2 input) throws Exception {
+  
+        Writer consoleWriter = new OutputStreamWriter(System.out);
+        consoleWriter.write("=====================>"+input.toString());
+        consoleWriter.flush();
         // 1. Configure FreeMarker
         //
         // You should do this ONLY ONCE, when your application starts,
@@ -416,8 +419,8 @@ public class Freemarker {
         for(int i = 0; i< input.getArrayOfItems().length; i++)
         {
             Map<String, Object> input2 = new HashMap<String, Object>();
-            List<InputBeanGeneral2.FindingsText> systems = new ArrayList<InputBeanGeneral2.FindingsText>();
-            
+            List<Object> systems = new ArrayList<Object>();
+             
             for(int j = 0; j < input.getArrayOfItems()[i].getFindingsText().length; j++ )
                 systems.add(input.getArrayOfItems()[i].getFindingsText()[j]);
             
@@ -431,13 +434,13 @@ public class Freemarker {
             input2.put("systems", systems);
 
             // Write output to the console
-            Writer consoleWriter = new OutputStreamWriter(System.out);
+            consoleWriter = new OutputStreamWriter(System.out);
             template.process(input2, consoleWriter);
             consoleWriter.flush();
             // For the sake of example, also write output into a file:
             Writer fileWriter = new FileWriter(new File("/usr/local/tomcat/output"+i+".html"));
             try {
-                template.process(input, fileWriter);
+                template.process(input2, fileWriter);
             } finally {
                 fileWriter.close();
             }
@@ -451,7 +454,7 @@ public class Freemarker {
             while((line = fileReader.readLine())!=null){
                 sb.append(line+"\n");
             }
-            
+            fileReader.close();
         }
         sb.append(input.getFooterHTML());
 
