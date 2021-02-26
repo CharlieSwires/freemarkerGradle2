@@ -96,7 +96,11 @@ public class RController  {
         return new ResponseEntity<ReturnBean>(rb, HttpStatus.OK);
     }
     /**
-     * 
+     * Given the input which takes bodyFTL, headerHTML, footerHTML
+     * and arrayOfItems pass to freemarker then pass to the PDF
+     * generator returning Base64 file and sha1.
+     * CSV indicates EXCEL format CSV input this is used in the 
+     * replacementStringsCSV and should have columns = 2, key, value
      * @param input
      * @return
      */
