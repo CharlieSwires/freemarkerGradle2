@@ -96,6 +96,25 @@ public class RController  {
         return new ResponseEntity<ReturnBean>(rb, HttpStatus.OK);
     }
     /**
+     * 
+     * @param input
+     * @return
+     */
+    @PostMapping(path="GeneralToPDF2", produces="application/json", consumes="application/json")
+    public ResponseEntity<ReturnBean> postFile(@RequestBody InputBeanGeneral2 input) {
+        String result=null;
+        try {
+            result = service.convert(input);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        ReturnBean rb = new ReturnBean();
+        rb.setFileB64(result);
+        Base64.Decoder b64d = Base64.getDecoder();
+        rb.setSha1(encryption.sha1(b64d.decode(result)));
+        return new ResponseEntity<ReturnBean>(rb, HttpStatus.OK);
+    }
+    /**
      * Saves the template to file
      * @param input
      * @return

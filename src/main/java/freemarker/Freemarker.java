@@ -1,8 +1,9 @@
 package freemarker;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
@@ -238,6 +239,14 @@ public class Freemarker {
         Writer consoleWriter = new OutputStreamWriter(System.out);
         template.process(input, consoleWriter);
         consoleWriter.flush();
+        
+        // For the sake of example, also write output into a file:
+        Writer fileWriter = new FileWriter(new File("/usr/local/tomcat/output.html"));
+        try {
+            template.process(input, fileWriter);
+        } finally {
+            fileWriter.close();
+        }
 
         return publishPDF();
     }
@@ -309,12 +318,11 @@ public class Freemarker {
         Writer consoleWriter = new OutputStreamWriter(System.out);
         consoleWriter.write(input.getInputHTML());
         consoleWriter.flush();
-        return publishPDF();
+       return publishPDF();
     }
 
 
     private String publishPDF() throws Exception {
-        Writer consoleWriter = new OutputStreamWriter(System.out);
 
         boolean isWindows = System.getProperty("os.name")
                 .toLowerCase().startsWith("windows");
@@ -344,7 +352,7 @@ public class Freemarker {
             //            builder.command("cmd.exe", "/c", "del test.pdf");
             //            builder.command("cmd.exe", "/c", "node index.js");
         } else {
-            builder.command("sh", "-c", "rm test.pdf");
+            builder.command("sh", "-c", "rm *.pdf");
             builder.directory(new File("/usr/local/tomcat"));
             Process process = builder.start();
             builder.command("sh", "-c", "su user");
@@ -378,5 +386,79 @@ public class Freemarker {
         //            fos.write(b64d.decode(result));
         //        }        
         return result;    
+    }
+
+    public String convert(InputBeanGeneral2 input) throws Exception {
+        // 1. Configure FreeMarker
+        //
+        // You should do this ONLY ONCE, when your application starts,
+        // then reuse the same Configuration object elsewhere.
+
+        Configuration cfg = new Configuration();
+        // Where do we load the templates from:
+        cfg.setDirectoryForTemplateLoading(new File("/usr/local/tomcat"));
+
+        // Some other recommended settings:
+        cfg.setIncompatibleImprovements(new Version(2, 3, 20));
+        cfg.setDefaultEncoding("UTF-8");
+        cfg.setLocale(Locale.US);
+        cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+
+        FileWriter fw = new FileWriter(new File("/usr/local/tomcat/input.ftl"));
+        fw.write(input.getBodyFTL());
+        fw.close();
+
+        // 2. Proccess template(s)
+        //
+        // You will do this for several times in typical applications.
+
+        // 2.1. Prepare the template input:
+        for(int i = 0; i< input.getArrayOfItems().length; i++)
+        {
+            Map<String, Object> input2 = new HashMap<String, Object>();
+            List<InputBeanGeneral2.FindingsText> systems = new ArrayList<InputBeanGeneral2.FindingsText>();
+            
+            for(int j = 0; j < input.getArrayOfItems()[i].getFindingsText().length; j++ )
+                systems.add(input.getArrayOfItems()[i].getFindingsText()[j]);
+            
+            Reader in = new StringReader(input.getArrayOfItems()[i].getInputCSV());
+            Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);
+            for (CSVRecord record : records) {
+                input2.put(record.get(0), record.get(1)); 
+            }
+
+            Template template = cfg.getTemplate("input.ftl");
+            input2.put("systems", systems);
+
+            // Write output to the console
+            Writer consoleWriter = new OutputStreamWriter(System.out);
+            template.process(input2, consoleWriter);
+            consoleWriter.flush();
+            // For the sake of example, also write output into a file:
+            Writer fileWriter = new FileWriter(new File("/usr/local/tomcat/output"+i+".html"));
+            try {
+                template.process(input, fileWriter);
+            } finally {
+                fileWriter.close();
+            }
+
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(input.getHeaderHTML());
+        for(int i = 0; i< input.getArrayOfItems().length; i++) {
+            String line;
+            BufferedReader fileReader = new BufferedReader(new FileReader(new File("/usr/local/tomcat/output"+i+".html")));
+            while((line = fileReader.readLine())!=null){
+                sb.append(line+"\n");
+            }
+            
+        }
+        sb.append(input.getFooterHTML());
+
+        FileWriter fw1 = new FileWriter(new File("/usr/local/tomcat/output.html"));
+        fw1.write(sb.toString());
+        fw1.close();
+
+        return publishPDF();
     }
 }

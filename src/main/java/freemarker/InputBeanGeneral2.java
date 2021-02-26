@@ -1,0 +1,93 @@
+package freemarker;
+
+import java.util.Arrays;
+
+public class InputBeanGeneral2 {
+    private String headerHTML;
+    private String bodyFTL;
+    private String footerHTML;
+    private ArrayOfItems[] arrayOfItems;
+
+    static class ArrayOfItems {
+        private String inputCSV;
+        private FindingsText[] findingsText;
+        public String getInputCSV() {
+            return inputCSV;
+        }
+        public void setInputCSV(String inputCSV) {
+            this.inputCSV = inputCSV;
+        }
+        public FindingsText[] getFindingsText() {
+            return findingsText;
+        }
+        public void setFindingsText(FindingsText[] findingsText) {
+            this.findingsText = findingsText;
+        }
+        @Override
+        public String toString() {
+            return "ArrayOfItems [inputCSV=" + inputCSV + ", findingsText="
+                    + Arrays.toString(findingsText) + "]";
+        }
+    }
+
+    static class FindingsText{
+        private String type;
+        private String note;
+        public String getType() {
+            return type;
+        }
+        public void setType(String type) {
+            this.type = type;
+        }
+        public String getNote() {
+            return note;
+        }
+        public void setNote(String note) {
+            this.note = note;
+        }
+        @Override
+        public String toString() {
+            return "FindingsText [type=" + type + ", note=" + note + "]";
+        }
+    }
+
+    public String getHeaderHTML() {
+        return headerHTML;
+    }
+
+    public void setHeaderHTML(String headerHTML) {
+        this.headerHTML = headerHTML;
+    }
+
+    public String getBodyFTL() {
+        return bodyFTL;
+    }
+
+    public void setBodyFTL(String bodyFTL) {
+        this.bodyFTL = bodyFTL;
+    }
+
+    public String getFooterHTML() {
+        return footerHTML;
+    }
+
+    public void setFooterHTML(String footerHTML) {
+        this.footerHTML = footerHTML;
+    }
+
+    public ArrayOfItems[] getArrayOfItems() {
+        return arrayOfItems;
+    }
+
+    public void setArrayOfItems(ArrayOfItems[] arrayOfItems) {
+        this.arrayOfItems = arrayOfItems;
+    }
+
+    @Override
+    public String toString() {
+        return "InputBeanGeneral2 [headerHTML=" + headerHTML + ", bodyFTL=" + bodyFTL
+                + ", footerHTML=" + footerHTML + ", arrayOfItems=" + Arrays.toString(arrayOfItems)
+                + "]";
+    }
+}
+
