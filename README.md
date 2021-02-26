@@ -25,20 +25,56 @@ postman
 <p>http://localhost:8888/freemarker/TabularToPDF/columns/3</p>
 { "file" : "1,2,3"
 }
+
 <p>http://localhost:8888/freemarker/TabularToPDF/columns/3</p>
 { "file" : "hello,there,finally"
 }
+
 <p>Supports 1-5 columns can be extended simply.</p>
 <p>http://localhost:8888/freemarker/GeneralToPDF</p>
 {
     "inputHTML" : ".......",
     "replacementStrings" : "title,my title1\nnext,my next2\n"
 }
+
+<p>http://localhost:8888/freemarker/GeneralToPDF2</p>
+{
+"headerHTML": ".........",
+"bodyFTL":".........",
+"footerHTML": "...........",
+"arrayOfItems": [{
+"inputCSV": "one,1\ntwo,2\n",
+"findingsText": [
+{
+"type": "Type1",
+"note": "Findings...."
+},
+{
+"type": "Type1",
+"note": "Findings...."
+}]
+},
+{
+"inputCSV": "one,1\ntwo,2\n",
+"findingsText": [
+{
+"type": "Type1",
+"note": "Findings...."
+},
+{
+"type": "Type1",
+"note": "Findings...."
+}]
+}
+]
+}
+
 <p>http://localhost:8888/freemarker/Init.</p>
 {
     "inputFTL" : "<html><head><title>Charlie's Magic</title></head><body><#list systems as system><p>$system_index + 1}</p><p>${system.auditId},${system.objectId},${system.objectTitle},${system.objectType},${system.stage},${system.commChnl},${system.commLang},${system.plndStrtDt},${system.plndEndDt},${system.actlEndDt},${system.status},${system.mjrNc},${system.nextRevDt},${system.auditee},${system.auditeeName},${system.auditeeEmail},${system.auditeeLocations},${system.auditeeTimezone},${system.creBy},${system.creAt},${system.updBy},${system.updAt}</p></#list></body></html>",
 "filename": "columnsPartha1Template.ftl"
 }
+
 <p>http://localhost:8888/freemarker/Partha1ToPDF.</p>
 [
   {
@@ -144,11 +180,13 @@ postman
     ]
   }
 ]
+
 <p>http://localhost:8888/freemarker/isTamperedWith.</p>
 {
     "fileB64": ".......",
     "sha1": "cGVjxRZmKwgwrCrhWDHYMSIfMvQ="
 }
+
 <p>http://localhost:8888/freemarker/ToPDF.</p>
 {
     "inputHTML": ".........."
