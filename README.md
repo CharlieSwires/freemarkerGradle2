@@ -1,7 +1,7 @@
 freemarker
 ----------
 <p>in git bash
-git clone https://github.com/CharlieSwires/freemarkerGradle</p>
+git clone https://github.com/CharlieSwires/freemarkerGradle2</p>
 
 <p>This contains both the java and node</p>
 
