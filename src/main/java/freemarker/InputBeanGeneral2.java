@@ -8,14 +8,23 @@ public class InputBeanGeneral2 {
     private String footerHTML;
     private ArrayOfItems[] arrayOfItems;
 
-    static class ArrayOfItems {
+    public InputBeanGeneral2() {
+        
+    }
+    public static class ArrayOfItems {
         private String inputCSV;
         private FindingsText[] findingsText;
-        
-        static class FindingsText{
+  
+        public ArrayOfItems() {
+            
+        }
+        public static class FindingsText{
             private String type;
             private String note;
-            public String getType() {
+            public FindingsText() {
+                
+            }
+                 public String getType() {
                 return type;
             }
             public void setType(String type) {

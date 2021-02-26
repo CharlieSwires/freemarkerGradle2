@@ -421,8 +421,13 @@ public class Freemarker {
             Map<String, Object> input2 = new HashMap<String, Object>();
             List<Object> systems = new ArrayList<Object>();
              
-            for(int j = 0; j < input.getArrayOfItems()[i].getFindingsText().length; j++ )
-                systems.add(input.getArrayOfItems()[i].getFindingsText()[j]);
+            for(int j = 0; j < input.getArrayOfItems()[i].getFindingsText().length; j++ ) {
+                InputBeanGeneral2.ArrayOfItems.FindingsText item = new InputBeanGeneral2.ArrayOfItems.FindingsText();
+                item.setType(input.getArrayOfItems()[i].getFindingsText()[j].getType());
+                item.setNote(input.getArrayOfItems()[i].getFindingsText()[j].getNote());
+                systems.add((Object)item);
+                
+            }
             
             Reader in = new StringReader(input.getArrayOfItems()[i].getInputCSV());
             Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);
